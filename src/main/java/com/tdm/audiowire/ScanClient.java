@@ -22,8 +22,8 @@ public class ScanClient {
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
             logger.info("Connected to Autovoice Player Server");
-            writer.println("PING");
-            logger.info("Sent command: PING");
+            writer.println(AutovoiceCommand.LOAD);
+            logger.info("Sent command: {}", AutovoiceCommand.LOAD);
             String response = reader.readLine();
             logger.info("Received response: {}", response);
         } catch (IOException e) {

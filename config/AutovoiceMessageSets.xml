@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AutovoiceMessageSets>
+    <MessageSet group="MRI" key="START_SCAN">
+        <preWav>audio/pre.wav</preWav>
+        <postWav>audio/post.wav</postWav>
+        <speed>1.0</speed>
+    </MessageSet>
+</AutovoiceMessageSets>

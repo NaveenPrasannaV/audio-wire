@@ -12,6 +12,7 @@ import java.net.Socket;
 public class AutoVoiceHandlerThread extends Thread {
     private static final Logger logger = LoggerFactory.getLogger(AutoVoiceHandlerThread.class);
     private final Socket clientSocket;
+    private final AutovoiceInterpreter interpreter = new AutovoiceInterpreter();
 
     public AutoVoiceHandlerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -26,11 +27,9 @@ public class AutoVoiceHandlerThread extends Thread {
             logger.info("Handling client: {}", socket.getRemoteSocketAddress());
             String command = reader.readLine();
             logger.info("Received command: {}", command);
-            if ("PING".equals(command)) {
-                writer.println("PONG");
-            } else {
-                writer.println("UNKNOWN_COMMAND");
-            }
+
+            String response = interpreter.evaluateCommand(command);
+            writer.println(response);
         } catch (IOException e) {
             logger.error("Error while handling client connection", e);
         }
