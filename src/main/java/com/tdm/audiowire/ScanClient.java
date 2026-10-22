@@ -26,6 +26,13 @@ public class ScanClient {
             logger.info("Sent command: {}", AutovoiceCommand.LOAD);
             String response = reader.readLine();
             logger.info("Received response: {}", response);
+
+            writer.println(AutovoiceCommand.PLAY_PRE);
+            logger.info("Sent command: {}", AutovoiceCommand.PLAY_PRE);
+
+            response = reader.readLine();
+            logger.info("Received response: {}", response);
+
         } catch (IOException e) {
             logger.error("Could not connect to Autovoice Player Server", e);
         }

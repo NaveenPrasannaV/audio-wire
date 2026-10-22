@@ -1,3 +1,4 @@
+
 package com.tdm.audiowire;
 
 import org.slf4j.Logger;
@@ -10,9 +11,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class AutoVoiceHandlerThread extends Thread {
-    private static final Logger logger = LoggerFactory.getLogger(AutoVoiceHandlerThread.class);
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(AutoVoiceHandlerThread.class);
+
     private final Socket clientSocket;
-    private final AutovoiceInterpreter interpreter = new AutovoiceInterpreter();
+    private final AutovoiceInterpreter interpreter =
+            new AutovoiceInterpreter();
 
     public AutoVoiceHandlerThread(Socket clientSocket) {
         this.clientSocket = clientSocket;
@@ -20,16 +25,28 @@ public class AutoVoiceHandlerThread extends Thread {
 
     @Override
     public void run() {
-        try (Socket socket = clientSocket;
-             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+        try (
+                Socket socket = clientSocket;
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(socket.getInputStream()));
+                PrintWriter writer = new PrintWriter(
+                        socket.getOutputStream(), true)
         ) {
-            logger.info("Handling client: {}", socket.getRemoteSocketAddress());
-            String command = reader.readLine();
-            logger.info("Received command: {}", command);
+            logger.info("Handling client: {}",
+                    socket.getRemoteSocketAddress());
 
-            String response = interpreter.evaluateCommand(command);
-            writer.println(response);
+            String command;
+
+            // Process commands until the client disconnects.
+            while ((command = reader.readLine()) != null) {
+                logger.info("Received command: {}", command);
+
+                String response = interpreter.evaluateCommand(command);
+
+                writer.println(response);
+                logger.info("Sent response: {}", response);
+            }
+
         } catch (IOException e) {
             logger.error("Error while handling client connection", e);
         }
